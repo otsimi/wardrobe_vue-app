@@ -53,10 +53,11 @@ export default{
         }
         console.log(data, 'dataaa')
         const response = await axios.post('register', data);
-        console.log(response,'respomse') 
+        console.log(response,'respomse')
+        this.$router.push('/login');
         }
-       } 
-    }
+       }
+    } 
 
    
 </script>
@@ -114,4 +115,5 @@ label {
 .btn-primary:hover {
   background-color: #508a9b;
 }
+
 </style>
