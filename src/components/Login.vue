@@ -4,12 +4,22 @@
 
     <div class="form-group">
       <label>Email</label>
-      <input type="email" class="form-control" v-model="email" placeholder="Enter your email" />
+      <input
+        type="email"
+        class="form-control"
+        v-model="email"
+        placeholder="Enter your email"
+      />
     </div>
 
     <div class="form-group">
       <label>Password</label>
-      <input type="password" class="form-control" v-model="password" placeholder="Enter your password" />
+      <input
+        type="password"
+        class="form-control"
+        v-model="password"
+        placeholder="Enter your password"
+      />
     </div>
 
     <button class="btn btn-primary btn-block">Login</button>
@@ -20,38 +30,46 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "Login",
-  data(){
-    return{
-        email: '',
-        password: '',
-    }
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
   },
-   methods: {
-        async onSubmit(){
-           console.log("Form submitted")
-            const data = {
-                email:this.email,
-                password:this.password,
-            }
-            console.log(data, 'Login data')
-            const response = await axios.post('api/login',data)
-            console.log(response,'respomse')
-            localStorage.setItem("user_id", response.data.user.id);
-            console.log(response.data.user.id, "user_id")
-            localStorage.setItem("user_name", response.data.user.first_name + " " + response.data.user.last_name);
-            console.log(response.data.user.first_name,'user_name')
-            this.$router.push('/');
-        }
-    }
+  methods: {
+    async onSubmit() {
+      try {
+        const data = {
+          email: this.email,
+          password: this.password,
+        };
+        const response = await axios.post("api/login", data);
+
+        localStorage.setItem("user_id", response.data.user.id);
+        console.log(response.data.user.id, 'Logged user')
+        localStorage.setItem(
+          "user_name",
+          response.data.user.first_name + " " + response.data.user.last_name
+        );
+        alert("Login successful!");
+
+        this.$router.push("/");
+        // location.reload();
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert("Login failed, Incorrect email/password! Try again or Sign up")
+      }
+      
+    },
+  },
 };
 </script>
 
 <style>
-
 .login-form {
   display: flex;
   flex-direction: column;
@@ -105,6 +123,4 @@ label {
 .btn-primary:hover {
   background-color: #508a9b;
 }
-
-
 </style>

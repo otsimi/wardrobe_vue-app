@@ -32,8 +32,12 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="card-text">{{ item.category }}</p>
-              <button class="btn btn-primary" @click="editItem(item)">Edit</button>
-              <button class="btn btn-danger mt-2" @click="deleteItem(item.id)">Delete</button>
+              <button class="btn btn-primary" @click="editItem(item)">
+                Edit
+              </button>
+              <button class="btn btn-danger mt-2" @click="deleteItem(item.id)">
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -50,25 +54,43 @@
           <form @submit.prevent="editingItemId ? updateItem() : submitItem()">
             <div class="mb-3">
               <label class="form-label">Item Name</label>
-              <input type="text" class="form-control" v-model="newItem.name" required />
+              <input
+                type="text"
+                class="form-control"
+                v-model="newItem.name"
+                required
+              />
             </div>
             <div class="mb-3">
               <label class="form-label">Category</label>
               <select class="form-control" v-model="newItem.category" required>
-                <option v-for="category in categories" :key="category.id" :value="category.name">
+                <option
+                  v-for="category in categories"
+                  :key="category.id"
+                  :value="category.name"
+                >
                   {{ category.name }}
                 </option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Image URL</label>
-              <input type="text" class="form-control" v-model="newItem.image" required />
+              <input
+                type="text"
+                class="form-control"
+                v-model="newItem.image"
+                required
+              />
             </div>
             <div class="d-flex justify-content-between">
               <button type="submit" class="btn btn-primary">
                 {{ editingItemId ? "Update" : "Save" }}
               </button>
-              <button type="button" class="btn btn-secondary" @click="showModal = false">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="showModal = false"
+              >
                 Cancel
               </button>
             </div>
@@ -80,8 +102,7 @@
 </template>
 
 <script>
-
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -104,8 +125,10 @@ export default {
     filteredItems() {
       return this.clothingItems.filter((item) => {
         return (
-          (this.selectedCategory === "" || item.category === this.selectedCategory) &&
-          (this.searchQuery === "" || item.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+          (this.selectedCategory === "" ||
+            item.category === this.selectedCategory) &&
+          (this.searchQuery === "" ||
+            item.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
         );
       });
     },
@@ -115,7 +138,7 @@ export default {
       try {
         const response = await axios.get("api/clothes");
         this.clothingItems = response.data;
-        console.log(this.clothingItems, 'ALL clothes in the db')
+        console.log(this.clothingItems, "ALL clothes in the db");
       } catch (error) {
         console.error("Error fetching items:", error.response?.data || error);
       }
@@ -128,7 +151,7 @@ export default {
         this.clothingItems.push(response.data);
         this.showModal = false;
         this.newItem = { name: "", category: "", image: "" };
-        console.log(this.newItem, 'New clothe Malenge')
+        console.log(this.newItem, "New clothe Malenge");
       } catch (error) {
         console.error("Error adding item:", error.response?.data || error);
       }
@@ -136,11 +159,17 @@ export default {
 
     async updateItem() {
       try {
-        const response = await axios.put(`api/clothes/${this.editingItemId}`, this.newItem, {
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await axios.put(
+          `api/clothes/${this.editingItemId}`,
+          this.newItem,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
 
-        const index = this.clothingItems.findIndex(item => item.id === this.editingItemId);
+        const index = this.clothingItems.findIndex(
+          (item) => item.id === this.editingItemId
+        );
         if (index !== -1) {
           this.clothingItems[index] = response.data;
         }
@@ -148,8 +177,7 @@ export default {
         this.showModal = false;
         this.editingItemId = null;
         this.newItem = { name: "", category: "", image: "" };
-        console.log(this.newItem, 'Edited ItemMalenge')
-
+        console.log(this.newItem, "Edited ItemMalenge");
       } catch (error) {
         console.error("Error updating item:", error.response?.data || error);
       }
@@ -157,8 +185,10 @@ export default {
     async deleteItem(itemId) {
       try {
         await axios.delete(`api/clothes/${itemId}`);
-        this.clothingItems = this.clothingItems.filter(item => item.id !== itemId);
-        console.log(this.clothingItems, 'deletedItem Malenge')
+        this.clothingItems = this.clothingItems.filter(
+          (item) => item.id !== itemId
+        );
+        console.log(this.clothingItems, "deletedItem Malenge");
       } catch (error) {
         console.error("Error deleting item:", error.response?.data || error);
       }
@@ -172,7 +202,7 @@ export default {
       this.newItem = { name: "", category: "", image: "" };
       this.editingItemId = null;
       this.showModal = true;
-    }
+    },
   },
   mounted() {
     this.fetchClothingItems();

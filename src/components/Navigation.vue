@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
-      <router-link to="/" class="nav-link">Home</router-link>
+      <router-link to="/" class="nav-link nav-hover">Home</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,11 +16,14 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <router-link to="/login" class="nav-link">Login</router-link>
+          <li class="nav-item" v-if="!isAuthenticated">
+            <router-link to="/login" class="nav-link nav-hover">Login</router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/register" class="nav-link">Sign Up</router-link>
+          <li class="nav-item" v-if="!isAuthenticated">
+            <router-link to="/register" class="nav-link nav-hover">Sign Up</router-link>
+          </li>
+          <li class="nav-item" v-if="isAuthenticated">
+            <button @click="logout" class="nav-link btn btn-link nav-hover">Sign Out</button>
           </li>
         </ul>
       </div>
@@ -30,21 +33,55 @@
 
 <script>
 export default {
-  name: "Navigation"
+  name: "Navigation",
+  data() {
+    return {
+      isAuthenticated: false,
+    };
+  },
+  created() {
+    this.checkAuth();
+  },
+  methods: {
+    checkAuth() {
+      this.isAuthenticated = !!localStorage.getItem("user_id");
+    },
+    logout() {
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("user_name");
+      this.isAuthenticated = false;
+      this.$router.push("/login");
+    },
+  },
+  watch: {
+    "$route": "checkAuth",
+  },
 };
 </script>
+
 <style scoped>
-body {
-  background-color: #274d60;
-  padding-top: 60px;
+
+.nav-hover {
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  padding: 8px 15px;
+  border-radius: 5px;
 }
-.custom-navbar {
-  background-color: #6ba3be;
+
+.nav-hover:hover {
+  color: white !important;
+  background-color: #274d60 !important;
 }
-.navbar .nav-link {
-  color: #000000;
+.nav-hover.btn-link {
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: #274d60;
+  font-size: 16px;
 }
-.navbar .nav-link:hover {
-  color: #e3f2fd;
+
+.nav-hover.btn-link:hover {
+  color: white !important;
+  background-color: #274d60 !important;
+  text-decoration: none;
 }
 </style>

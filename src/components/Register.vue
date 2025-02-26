@@ -1,65 +1,90 @@
 <template>
-    <form class="login-form" @submit.prevent="onSubmit">
-        <h3 class="form-title">Sign Up</h3>
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" class="form-control" v-model="first_name" placeholder="First Name"/>
-        </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" class="form-control" v-model="last_name" placeholder="Last Name"/>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" v-model="email" placeholder="Email"/>
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="text" class="form-control" v-model="password" placeholder="Password"/>
-        </div>
-        <div class="form-group">
-            <label>Password confirm</label>
-            <input type="text" class="form-control" v-model="password_confirmation" placeholder="Confirm password"/>
-        </div>
-        <button class="btn btn-primary btn-block">Sign Up</button>
-    </form>
+  <form class="login-form" @submit.prevent="onSubmit">
+    <h3 class="form-title">Sign Up</h3>
+    <div class="form-group">
+      <label>First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="first_name"
+        placeholder="First Name"
+      />
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="last_name"
+        placeholder="Last Name"
+      />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="email"
+        placeholder="Email"
+      />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="password"
+        placeholder="Password"
+      />
+    </div>
+    <div class="form-group">
+      <label>Password confirm</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="password_confirmation"
+        placeholder="Confirm password"
+      />
+    </div>
+    <button class="btn btn-primary btn-block">Sign Up</button>
+  </form>
 </template>
 
 <script>
-
-import axios from 'axios'
-export default{
-    name: 'Register',
-    data(){
-        return{
-            first_name: '',
-            last_name: '',
-            email: '',
-            password:'',
-            password_confirmation: '',
-
-        }
+import axios from "axios";
+export default {
+  name: "Register",
+  data() {
+    return {
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    };
+  },
+  methods: {
+    async onSubmit() {
+      console.log("Form submitted");
+     try{
+const data = {
+        first_name: this.first_name,
+        last_name: this.last_name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation,
+      };
+      console.log(data, "dataaa");
+      const response = await axios.post("api/register", data);
+      console.log(response, "respomse");
+      alert("Sign up successful! Login with your email and Password")
+      this.$router.push("/login");
+     } catch{
+      alert("Sign up failed! check your details and try again")
+     }
     },
-    methods:{
-       async onSubmit(){
-        console.log("Form submitted")
-        const data ={
-            first_name: this.first_name,
-            last_name: this.last_name,
-            email:this.email,
-            password: this.password,
-            password_confirmation: this.password_confirmation
-
-        }
-        console.log(data, 'dataaa')
-        const response = await axios.post('api/register', data);
-        console.log(response,'respomse')
-        this.$router.push('/login');
-        }
-       }
-    } 
-
-   
+  },
+};
 </script>
 <style scoped>
 .login-form {
@@ -115,5 +140,4 @@ label {
 .btn-primary:hover {
   background-color: #508a9b;
 }
-
 </style>
