@@ -32,11 +32,19 @@ export default {
   },
    methods: {
         async onSubmit(){
-            const response = await axios.post('/login',{
+           console.log("Form submitted")
+            const data = {
                 email:this.email,
                 password:this.password,
-            })
-            console.log(response, 'Login data')
+            }
+            console.log(data, 'Login data')
+            const response = await axios.post('api/login',data)
+            console.log(response,'respomse')
+            localStorage.setItem("user_id", response.data.user.id);
+            console.log(response.data.user.id, "user_id")
+            localStorage.setItem("user_name", response.data.user.first_name + " " + response.data.user.last_name);
+            console.log(response.data.user.first_name,'user_name')
+            this.$router.push('/');
         }
     }
 };

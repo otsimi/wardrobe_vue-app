@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <label>Password confirm</label>
-            <input type="text" class="form-control" v-model="confirm_password" placeholder="Confirm password"/>
+            <input type="text" class="form-control" v-model="password_confirmation" placeholder="Confirm password"/>
         </div>
         <button class="btn btn-primary btn-block">Sign Up</button>
     </form>
@@ -36,7 +36,7 @@ export default{
             last_name: '',
             email: '',
             password:'',
-            confirm_password: '',
+            password_confirmation: '',
 
         }
     },
@@ -48,11 +48,11 @@ export default{
             last_name: this.last_name,
             email:this.email,
             password: this.password,
-            confirm_password: this.confirm_password
+            password_confirmation: this.password_confirmation
 
         }
         console.log(data, 'dataaa')
-        const response = await axios.post('register', data);
+        const response = await axios.post('api/register', data);
         console.log(response,'respomse')
         this.$router.push('/login');
         }
