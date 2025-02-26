@@ -83,7 +83,7 @@
               />
             </div>
             <div class="d-flex justify-content-between">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary me-3">
                 {{ editingItemId ? "Update" : "Save" }}
               </button>
               <button
