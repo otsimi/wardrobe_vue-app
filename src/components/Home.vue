@@ -1,7 +1,6 @@
 <template>
   <div class="home-container h-100">
     <div class="container">
-      <!-- Show User Name and Logout Button -->
       <div class="d-flex justify-content-between align-items-center mt-3">
         <!-- <h4 v-if="userName">Welcome, {{ userName }}</h4> -->
         <!-- <button v-if="userName" class="btn btn-danger" @click="logout">Logout</button> -->
@@ -38,10 +37,10 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="card-text">{{ item.category }}</p>
-              <button class="btn btn-primary" @click="editItem(item)">
+              <button class="btn btn-primary " @click="editItem(item)">
                 Edit
               </button>
-              <button class="btn btn-danger ms-2" @click="deleteItem(item.id)">
+              <button class="btn btn-danger mt-2" @click="deleteItem(item.id)">
                 Delete
               </button>
             </div>
@@ -49,7 +48,7 @@
         </div>
       </div>
 
-      <button class="btn btn-success mt-3" @click="addItem">
+      <button class="btn btn-success mt-3 mb-3" @click="addItem">
         + Add New Item
       </button>
     </div>
@@ -132,20 +131,20 @@ export default {
         (item) => item.id !== itemId
       );
     },
-    logout() {
-      // Clear localStorage on logout
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("user_name");
+    // logout() {
+    //   // Clear localStorage on logout
+    //   localStorage.removeItem("user_id");
+    //   localStorage.removeItem("user_name");
 
-      // Redirect to login
-      this.$router.push('/login');
-    }
+    //   // Redirect to login
+    //   this.$router.push('/login');
+    // }
   },
-  beforeCreate() {
-    if (!localStorage.getItem("user_id")) {
-      this.$router.push('/login');
-    }
-  }
+  // beforeCreate() {
+  //   if (!localStorage.getItem("user_id")) {
+  //     this.$router.push('/login');
+  //   }
+  // }
 };
 </script>
 
@@ -155,5 +154,8 @@ export default {
   min-height: 100vh;
   padding-top: 0;
   background: #e3f2fd;
+}
+.button-spacing {
+  margin-right: 10px;
 }
 </style>
