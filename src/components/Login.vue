@@ -48,9 +48,16 @@ export default {
           password: this.password,
         };
         const response = await axios.post("api/login", data);
+        console.log(response, "login response");
+        localStorage.setItem("token", response.data.token);
+
+        console.log("token", response.data.token);
 
         localStorage.setItem("user_id", response.data.user.id);
-        console.log(response.data.user.id, 'Logged user')
+        console.log(
+          response.data.user.id,
+          "Logged user" + response.data.user.first_name
+        );
         localStorage.setItem(
           "user_name",
           response.data.user.first_name + " " + response.data.user.last_name
@@ -61,9 +68,8 @@ export default {
         // location.reload();
       } catch (error) {
         console.error("Login failed:", error);
-        alert("Login failed, Incorrect email/password! Try again or Sign up")
+        alert("Login failed, Incorrect email/password! Try again or Sign up");
       }
-      
     },
   },
 };

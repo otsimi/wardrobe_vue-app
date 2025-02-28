@@ -110,6 +110,7 @@ export default {
       searchQuery: "",
       selectedCategory: "",
       userName: localStorage.getItem("user_name") || null,
+      token: localStorage.getItem("token")|| null,
       showModal: false,
       editingItemId: null,
       newItem: { name: "", category: "", image: "" },
@@ -136,18 +137,22 @@ export default {
   methods: {
     async fetchClothingItems() {
       try {
-        const response = await axios.get("api/clothes");
+        const response = await axios.get("api/clothes", {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+        })
         this.clothingItems = response.data;
-        console.log(this.clothingItems, "ALL clothes in the db");
+        console.log(this.clothingItems, `ALL clothes in the db for ${this.userName}`);
       } catch (error) {
         console.error("Error fetching items:", error.response?.data || error);
       }
     },
     async submitItem() {
+      console.log(this.userId,"userId")
       try {
         const response = await axios.post("api/clothes", this.newItem, {
-          headers: { "Content-Type": "application/json" },
+         headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
         });
+         console.log(this.token, "token")
         this.clothingItems.push(response.data);
         this.showModal = false;
         this.newItem = { name: "", category: "", image: "" };
@@ -159,11 +164,9 @@ export default {
 
     async updateItem() {
       try {
-        const response = await axios.put(
-          `api/clothes/${this.editingItemId}`,
-          this.newItem,
+        const response = await axios.put(`api/clothes/${this.editingItemId}`,this.newItem,
           {
-            headers: { "Content-Type": "application/json" },
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
           }
         );
 
@@ -177,18 +180,20 @@ export default {
         this.showModal = false;
         this.editingItemId = null;
         this.newItem = { name: "", category: "", image: "" };
-        console.log(this.newItem, "Edited ItemMalenge");
+        console.log(this.newItem,`Edited Item for ${this.userName}`);
       } catch (error) {
         console.error("Error updating item:", error.response?.data || error);
       }
     },
     async deleteItem(itemId) {
       try {
-        await axios.delete(`api/clothes/${itemId}`);
+        await axios.delete(`api/clothes/${itemId}`, {
+           headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+        });
         this.clothingItems = this.clothingItems.filter(
           (item) => item.id !== itemId
         );
-        console.log(this.clothingItems, "deletedItem Malenge");
+        console.log(this.clothingItems, `deletedItem for ${this.userName}`);
       } catch (error) {
         console.error("Error deleting item:", error.response?.data || error);
       }
